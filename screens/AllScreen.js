@@ -1,0 +1,98 @@
+import { StyleSheet, Text, Share, View, Image } from 'react-native'
+import React from 'react'
+import BoxContainer from '../components/BoxContainer'
+import { Ionicons } from '@expo/vector-icons';
+
+const AllScreen = ({navigation}) => {
+    
+    function getIcons(title){
+        switch(title){
+            case "Velg by":
+                return <Ionicons name='location' size={52} color="black" style={{alignSelf: "center"}}/>;
+            case "Velg Moske":
+                return <Image source={require("./../assets/mosque.png")} style={{width: 50, height: 50, alignSelf: "center"}}/>;
+            case "Om appen":
+                return <Ionicons name="information-circle" size={52} color="black" style={{alignSelf: "center"}}/>
+            case "Innstillinger":
+                return <Image source={require("./../assets/setting.png")} style={{width: 50, height: 50, alignSelf: "center"}}/>;
+            case "Koran" :
+                return <Image source={require("./../assets/quran.png")} style={{width: 50, height: 50, alignSelf: "center"}}/>;
+            case "Hijrikalender":
+                return <Image source={require("./../assets/calendar.png")} style={{width: 50, height: 50, alignSelf: "center"}}/>;
+            case "Admin":
+                return <Image source={require("./../assets/user.png")} style={{width: 50, height: 50, alignSelf: "center"}}/>;
+            case "Del appen":
+                return <Ionicons name='share-social' size={52} color="black" style={{alignSelf: "center"}}/>;;
+            default:
+                return null;
+        }
+    }
+
+    const shareApp = async () => {
+        try {
+            const result = await Share.share({
+                message: 'Sjekk ut denne flotte appen: https://example.com/app-link',
+                url: 'https://example.com/app-link',
+                title: 'Del Appen'
+            });
+
+            if (result.action === Share.sharedAction){
+                if (result.activityType){
+                    console.log("Delt appen med aktivitetstype")
+                } else{
+                    console.log("Delt appen")
+                }
+            } else if(result.action === Share.dismissedAction){
+                console.log("Avbrutt delingen")
+            }
+        } catch (error) {
+            console.error(error.message)
+        }
+    }
+
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.column}>
+                <View style={styles.row}>
+                    <BoxContainer title="Velg by" icon={getIcons("Velg by")} onPress={() => navigation.navigate('Calendar')}/>
+                    <BoxContainer title="Velg Moske" icon={getIcons("Velg Moske")} onPress={() => navigation.navigate('Calendar')}/>
+                </View>
+                
+                <View style={styles.row}>
+                    <BoxContainer title="Om appen" icon={getIcons("Om appen")} onPress={() => navigation.navigate('Info')}/>
+                    <BoxContainer title="Innstillinger" icon={getIcons("Innstillinger")} onPress={() => navigation.navigate('Settings')}/>
+                </View>
+
+                <View style={styles.row}>
+                    <BoxContainer title="Koran" icon={getIcons("Koran")} onPress={() => navigation.navigate('Quran')}/>
+                    <BoxContainer title="Hijrikalender" icon={getIcons("Hijrikalender")} onPress={() => navigation.navigate('HijriCalendar')}/>
+                </View>
+
+                <View style={styles.row}>
+                    <BoxContainer title="Admin" icon={getIcons("Admin")} onPress={() => navigation.navigate('Admin')}/>
+                    <BoxContainer title="Del appen" icon={getIcons("Del appen")} onPress={() => shareApp()}/>
+                </View>
+
+            </View>
+        </View>
+    )
+}
+
+export default AllScreen
+
+const styles = StyleSheet.create({
+    container: {
+        marginBottom: "auto",
+        marginTop: "auto",
+    },
+    column: {
+        flexDirection: "column",
+        padding: 5,
+    },
+
+    row: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    }
+})
