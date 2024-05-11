@@ -1,5 +1,6 @@
 import { Modal, StyleSheet, FlatList, TouchableOpacity, Text, TextInput, View } from 'react-native'
 import React, {useState} from 'react'
+import useStoredLocation from '../data/storedData';
 
 const CitySelectorModal = ({visible, onClose, onSelectCity }) => {
     const [search, setSearch] = useState('');
@@ -9,11 +10,15 @@ const CitySelectorModal = ({visible, onClose, onSelectCity }) => {
         'Fredrikstad', 'Porsgrunn', 'Skien', 
         'Bodø', 'Ålesund', 'Haugesund'
     ]);
+    const [location, setLocation] = useStoredLocation();
 
     // Filtrer byer basert på søketekst
     const filteredCities = cities.filter(city => city.toLowerCase().includes(search.toLowerCase()));
 
-
+    function selectCity(city){
+        setLocation(city)
+        onSelectCity(city)
+    }
 
     return (
         <Modal
@@ -24,6 +29,8 @@ const CitySelectorModal = ({visible, onClose, onSelectCity }) => {
         >
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
+                    <Text style={{marginBottom: 20, fontSize: 20}}>Valgt by: {location}</Text>
+                    
                     <TextInput 
                         style={styles.input}
                         placeholder="Søk etter by..."
@@ -36,7 +43,7 @@ const CitySelectorModal = ({visible, onClose, onSelectCity }) => {
                         data={filteredCities}
                         keyExtractor={item => item}
                         renderItem={({item}) => (
-                            <TouchableOpacity onPress={() => onSelectCity(item)}>
+                            <TouchableOpacity onPress={() => selectCity(item)}>
                                 <Text style={styles.cityName}>{item}</Text>
                             </TouchableOpacity>
                         )}

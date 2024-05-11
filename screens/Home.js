@@ -8,6 +8,7 @@ import PrayerCard from '../components/PrayerCard'
 import CitySelectorModal from '../components/CitySelectorModal'
 import { Ionicons } from '@expo/vector-icons';
 import useStoredLocation from '../data/storedData'
+import LoadingSircle from '../components/LoadingSircle';
 
 const Home = ({ navigation }) => {
     const [prayerTimes, setPrayerTimes] = useState(null);
@@ -49,15 +50,14 @@ const Home = ({ navigation }) => {
         }
     }, [prayerTimes])
 
-    // console.log(currentPrayer)
-
-    //console.log(timeUntilNextPrayer)
-
-
 
     const handleCitySelect = (city) => {
         setLocation(city)
         setModalVisible(false)
+    }
+
+    if (prayerTimes === null){
+        return <LoadingSircle />
     }
 
   

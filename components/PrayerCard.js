@@ -13,6 +13,7 @@ const PrayerCard = ({prayer, nextPrayer, currentPrayer}) => {
     const isPastPrayer = prayer[0] !== currentPrayer 
         && new Date().getTime() - new Date().setHours(...prayer[1].split(':').map(Number), 0, 0) > 0;
 
+        
     function getIcon(prayer){
         if (prayer === "Sunrise"){
             return <Feather name="sunrise" size={24} color="orange" style={{marginRight: 5}}/>

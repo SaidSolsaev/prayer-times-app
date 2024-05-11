@@ -10,7 +10,7 @@ const useStoredLocation = () => {
         const loadLocation = async () => {
             const savedLocation = await AsyncStorage.getItem('location');
             
-            if (savedLocation) {
+            if (savedLocation !== null) {
                 setLocation(savedLocation);
             }
         };
@@ -23,9 +23,9 @@ const useStoredLocation = () => {
             await AsyncStorage.setItem('location', location);
         };
     
-        if (location !== 'Oslo') {
-            saveLocation();
-        }
+        
+        saveLocation();
+        
     }, [location]);
     
     return [location, setLocation];
