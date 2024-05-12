@@ -1,6 +1,6 @@
 import { Modal, StyleSheet, FlatList, TouchableOpacity, Text, TextInput, View } from 'react-native'
 import React, {useState} from 'react'
-import useStoredLocation from '../data/storedData';
+import {useStoredLocation} from '../data/storedData';
 
 const CitySelectorModal = ({visible, onClose, onSelectCity }) => {
     const [search, setSearch] = useState('');
@@ -10,7 +10,8 @@ const CitySelectorModal = ({visible, onClose, onSelectCity }) => {
         'Fredrikstad', 'Porsgrunn', 'Skien', 
         'Bodø', 'Ålesund', 'Haugesund'
     ]);
-    const [location, setLocation] = useStoredLocation();
+    const { location, setLocation } = useStoredLocation();
+
 
     // Filtrer byer basert på søketekst
     const filteredCities = cities.filter(city => city.toLowerCase().includes(search.toLowerCase()));
@@ -69,8 +70,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 0,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      },
-      modalView: {
+    },
+    
+    modalView: {
         backgroundColor: 'white',
         borderRadius: 20,
         padding: 25,
@@ -85,8 +87,9 @@ const styles = StyleSheet.create({
         elevation: 5,
         width: 300,
         height: 350
-      },
-      input: {
+    },
+      
+    input: {
         height: 40,
         borderWidth: 1,
         borderRadius: 10,
@@ -94,19 +97,22 @@ const styles = StyleSheet.create({
         width: '100%',
         marginBottom: 20,
         color: "black",
-      },
-      cityName: {
+    },
+      
+    cityName: {
         fontSize: 18,
         margin: 10,
-      },
-      button: {
+    },
+    
+    button: {
         backgroundColor: "red",
         borderRadius: 10,
         padding: 10,
         elevation: 2,
         marginTop: 15,
-      },
-      buttonText: {
+    },
+    
+    buttonText: {
         color: "white",
         fontWeight: "bold",
         textAlign: "center"

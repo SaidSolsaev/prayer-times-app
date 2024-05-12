@@ -1,13 +1,16 @@
 import {StyleSheet} from 'react-native';
 import Routes from './Routes';
 import {NavigationContainer} from '@react-navigation/native';
+import { LocationProvider } from './data/storedData';
 
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Routes />
-    </NavigationContainer>
+    <LocationProvider>
+      <NavigationContainer>
+        <Routes />
+      </NavigationContainer>
+    </LocationProvider>
   );
 }
 

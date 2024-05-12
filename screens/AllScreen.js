@@ -1,10 +1,16 @@
-import { StyleSheet, Text, Share, View, Image } from 'react-native'
+import { StyleSheet, Text, Share, View, Image, Modal } from 'react-native'
 import React from 'react'
 import BoxContainer from '../components/BoxContainer'
 import { Ionicons } from '@expo/vector-icons';
+import CitySelectorModal from '../components/CitySelectorModal';
+import { useState } from 'react';
+import {useStoredLocation} from '../data/storedData';
 
 const AllScreen = ({navigation}) => {
-    
+    const [modalVisible, setModalVisible] = useState(false);
+    const { location, setLocation } = useStoredLocation();
+
+
     function getIcons(title){
         switch(title){
             case "Velg by":
@@ -50,12 +56,19 @@ const AllScreen = ({navigation}) => {
         }
     }
 
+    const handleCitySelect = (city) => {
+        setLocation(city)
+        setModalVisible(false)
+    }
 
-    return (
+    return ( 
+
         <View style={styles.container}>
+            <CitySelectorModal visible={modalVisible} onClose={() => setModalVisible(false)} onSelectCity={handleCitySelect}/>
+            
             <View style={styles.column}>
                 <View style={styles.row}>
-                    <BoxContainer title="Velg by" icon={getIcons("Velg by")} onPress={() => navigation.navigate('Calendar')}/>
+                    <BoxContainer title="Velg by" icon={getIcons("Velg by")} onPress={() => setModalVisible(!modalVisible)}/>
                     <BoxContainer title="Velg Moske" icon={getIcons("Velg Moske")} onPress={() => navigation.navigate('Calendar')}/>
                 </View>
                 
@@ -73,7 +86,6 @@ const AllScreen = ({navigation}) => {
                     <BoxContainer title="Admin" icon={getIcons("Admin")} onPress={() => navigation.navigate('Admin')}/>
                     <BoxContainer title="Del appen" icon={getIcons("Del appen")} onPress={() => shareApp()}/>
                 </View>
-
             </View>
         </View>
     )
@@ -90,9 +102,8 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         padding: 5,
     },
-
     row: {
         flexDirection: "row",
         justifyContent: "space-between",
-    }
+    },
 })

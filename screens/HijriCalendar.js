@@ -15,8 +15,6 @@ const HijriCalendar = () => {
       setHijriDate(`${data.data.hijri.day} ${data.data.hijri.month.en} ${data.data.hijri.year}`));
   }, [selected])
 
-  console.log(hijriDate)
-  console.log(new Date(selected)) 
 
   LocaleConfig.locales['no'] = {
     monthNames: [

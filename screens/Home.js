@@ -7,13 +7,15 @@ import bckg from "../assets/dashboard_background.jpg"
 import PrayerCard from '../components/PrayerCard'
 import CitySelectorModal from '../components/CitySelectorModal'
 import { Ionicons } from '@expo/vector-icons';
-import useStoredLocation from '../data/storedData'
+import {useStoredLocation} from '../data/storedData'
 import LoadingSircle from '../components/LoadingSircle';
 
 const Home = ({ navigation }) => {
     const [prayerTimes, setPrayerTimes] = useState(null);
     const [date, setDate] = useState(new Date());
-    const [location, setLocation] = useStoredLocation();
+    
+    const { location, setLocation } = useStoredLocation();
+
     const [modalVisible, setModalVisible] = useState(false)
     const [nextPrayer, setNextPrayer] = useState("");
     const [timeUntilNextPrayer, setTimeUntilNextPrayer] = useState({ hours: 0, minutes: 0, seconds: 0 });
