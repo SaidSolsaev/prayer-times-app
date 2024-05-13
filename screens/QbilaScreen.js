@@ -4,13 +4,15 @@ import { fetchQiblaDirection } from '../data/fetchData'
 import * as Location from 'expo-location';
 import { Magnetometer } from 'expo-sensors';
 import LoadingSircle from '../components/LoadingSircle';
+import QiblaCompass from "react-native-qibla-compass"
 
 const QbilaScreen = () => {
     const [lat, setLat] = useState(null)
     const [lon, setLon] = useState(null)
     const [direction, setDirection] = useState(null)
     const [errorMsg, setErrorMsg] = useState(null)
-    const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
+    // const [magnetometerData, setMagnetometerData] = useState({ x: 0, y: 0, z: 0 });
+
 
     useEffect(() => {
         (async () => {
@@ -25,11 +27,11 @@ const QbilaScreen = () => {
             setLon(location.coords.longitude)
         })();
 
-        const subscription = Magnetometer.addListener(data => {
-            setMagnetometerData(data);
-        });
+        // const subscription = Magnetometer.addListener(data => {
+        //     setMagnetometerData(data);
+        // });
 
-        return () => subscription.remove();
+        // return () => subscription.remove();
     }, [])
 
     useEffect(() => {
@@ -41,29 +43,33 @@ const QbilaScreen = () => {
         }
     }, [lat, lon])
 
-    const calculateAngle = () => {
-        const { x, y } = magnetometerData;
-        const angle = Math.atan2(y, x);
-        return angle + Math.PI / 2; // Adjust the angle by 90 degrees
-    };
+    // const calculateAngle = () => {
+    //     const { x, y } = magnetometerData;
+    //     const angle = Math.atan2(y, x);
+    //     return angle + Math.PI / 2; // Adjust the angle by 90 degrees
+    // };
 
-    const angleToQibla = direction ? calculateAngle() - (direction * Math.PI / 180) : 0;
+    //const angleToQibla = direction ? calculateAngle() - (direction * Math.PI / 180) : 0;
 
     if (errorMsg){
         return <Text>{errorMsg}</Text>
     }
 
-    if (angleToQibla === 0){
-        return <LoadingSircle />
-    }
+    // if (angleToQibla === 0){
+    //     return <LoadingSircle />
+    // }
 
+    
     
     return (
         <View style={styles.container}>
-            <View style={{transform: [{ rotate: `${angleToQibla}rad` }]}}>
+            <QiblaCompass
+                compassImage={require('../assets/compass.png')}
+                kaabaImage={require('../assets/kaaba.png')}/>
+            {/* <View style={{transform: [{ rotate: `${angleToQibla}rad` }]}}>
                 <Image source={require('../assets/compass.png')} style={styles.compass} />
-                {/* <Image source={require('../assets/kaaba.png')} style={styles.kaaba} /> */}
-            </View>
+                <Image source={require('../assets/kaaba.png')} style={styles.kaaba} />
+            </View> */}
         </View>
     )
 }
