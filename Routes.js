@@ -62,6 +62,7 @@ const Routes = () => {
         component={MyTabs} 
         options={{ 
           headerShown: false,
+          title: "Meny",
           headerStyle: {
             borderBottomWidth: 1,
             borderBottomColor: '#ccc',

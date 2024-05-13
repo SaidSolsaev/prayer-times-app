@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, } from 'react-native'
 import React from 'react'
+import { namesOfAllah } from '../data/namesOfAllah'
 
 const AllahNamesScreen = () => {
     return (
-        <View>
-            <Text>
+        <ScrollView>
+            {/* <Text>
                 Det første prinsippet for imaan i Islam er troen på Allah. 
                 Som muslimer tror vi på Allah i henhold til Hans vakre navn og attributter. 
                 Allah har gjentatte ganger avslørt sine navn i den hellige Koranen, primært for at vi skal forstå hvem Han er. 
@@ -27,13 +28,60 @@ const AllahNamesScreen = () => {
 
                 Abu Huraira rapporterte Allahs Budbringer(ﷺ) som sa: Det er nittini navn til Allah; den som lærer dem utenat, vil komme til Paradis. Sannelig, Allah er Ulik (Han er én, og det er et oddetall) og Han elsker oddetall..”
                 (Sahih Muslim Bok-48 Hadith-5){"\n"}
-            </Text>
-        </View>
+            </Text> */}
+
+            
+            <View style={styles.tableHeader}>
+                <Text style={[styles.cell, styles.bold]}>#</Text>
+                <Text style={[styles.cell, styles.bold]}>Navn</Text>
+                <Text style={[styles.cell, styles.bold]}>Navn</Text>
+                <Text style={[styles.cell, styles.bold]}>Oversettelse</Text>
+            </View>
+            {Object.entries(namesOfAllah).map(([key, { name, transliteration, meaning }]) => (
+                <View key={key} style={styles.tableRow}>
+                    <Text style={styles.cell}>{key}</Text>
+                    <Text style={[styles.cell, styles.bold]}>{name}</Text>
+                    <Text style={styles.cell}>{transliteration}</Text>
+                    <Text style={styles.cell}>{meaning}</Text>
+                </View>
+            ))}
+            
+        </ScrollView>
     )
 }
 
 export default AllahNamesScreen
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 10,
+    },
 
+    tableHeader: {
+        flexDirection: 'row',
+        justifyContent: "space-between",
+        alignItems: "center",
+        borderBottomWidth: 1,
+        backgroundColor: 'green',
+        borderTopWidth: 1,
+        padding: 10,
+    },
+
+    tableRow: {
+        backgroundColor: '#fff',
+        flexDirection: 'row',
+        alignItems: "center",
+        width: "100%",
+        justifyContent: "space-between",
+        borderBottomWidth: 1,
+        padding: 10,
+    },
+    cell: {
+        flex: 1,
+    },
+
+    bold: {
+        fontWeight: 'bold',
+    }
 })
