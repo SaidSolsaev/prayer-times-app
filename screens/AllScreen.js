@@ -15,8 +15,8 @@ const AllScreen = ({navigation}) => {
         switch(title){
             case "Velg by":
                 return <Ionicons name='location' size={52} color="black" style={{alignSelf: "center"}}/>;
-            case "Velg Moske":
-                return <Image source={require("./../assets/mosque.png")} style={{width: 50, height: 50, alignSelf: "center"}}/>;
+            case "Allah's 99 navn":
+                return <Image source={require("./../assets/allah.png")} style={{width: 70, height: 50, alignSelf: "center"}}/>;
             case "Om appen":
                 return <Ionicons name="information-circle" size={52} color="black" style={{alignSelf: "center"}}/>
             case "Innstillinger":
@@ -69,11 +69,12 @@ const AllScreen = ({navigation}) => {
             <View style={styles.column}>
                 <View style={styles.row}>
                     <BoxContainer title="Velg by" icon={getIcons("Velg by")} onPress={() => setModalVisible(!modalVisible)}/>
-                    <BoxContainer title="Velg Moske" icon={getIcons("Velg Moske")} onPress={() => navigation.navigate('Calendar')}/>
+                    <BoxContainer title="Om appen" icon={getIcons("Om appen")} onPress={() => navigation.navigate('Info')}/>
+
                 </View>
                 
                 <View style={styles.row}>
-                    <BoxContainer title="Om appen" icon={getIcons("Om appen")} onPress={() => navigation.navigate('Info')}/>
+                    <BoxContainer title="Allah's 99 navn" icon={getIcons("Allah's 99 navn")} onPress={() => navigation.navigate('AllahsNames')}/>
                     <BoxContainer title="Innstillinger" icon={getIcons("Innstillinger")} onPress={() => navigation.navigate('Settings')}/>
                 </View>
 

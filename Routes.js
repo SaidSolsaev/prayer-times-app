@@ -13,6 +13,8 @@ import HijriCalendar from './screens/HijriCalendar';
 import AboutScreen from './screens/AboutScreen';
 import AdminScreen from './screens/AdminScreen';
 import SettingsScreen from './screens/SettingsScreen';
+import SurahScreen from './components/SurahScreen';
+import AllahNamesScreen from './screens/AllahNamesScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -55,13 +57,120 @@ function MyTabs() {
 const Routes = () => {
   return(
     <Stack.Navigator>
-      <Stack.Screen name="Main" component={MyTabs} options={{ headerShown: false }}/>
-      <Stack.Screen name="Calendar" component={PrayerCalendar} options={{ headerShown: true }}/>
-      <Stack.Screen name="Quran" component={QuranScreen} options={{headerShown: true}} />
-      <Stack.Screen name="Admin" component={AdminScreen} options={{headerShown: true}} />
-      <Stack.Screen name="Info" component={AboutScreen} options={{headerShown: true}} />
-      <Stack.Screen name="Settings" component={SettingsScreen} options={{headerShown: true}} />
-      <Stack.Screen name="HijriCalendar" component={HijriCalendar} options={{headerShown: true}} />
+      <Stack.Screen 
+        name="Main" 
+        component={MyTabs} 
+        options={{ 
+          headerShown: false,
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: '#ccc',
+          }
+        }}
+      />
+      
+      <Stack.Screen 
+        name="Calendar" 
+        component={PrayerCalendar} 
+        options={{ 
+          headerShown: true, 
+          title: "Kalender",
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: '#ccc',
+          }
+        }}
+      />
+      
+      <Stack.Screen 
+        name="Quran" 
+        component={QuranScreen} 
+        options={{
+          headerShown: true, 
+          title: "Les Koran",
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: '#ccc',
+          }
+        }} 
+      />
+
+      <Stack.Screen 
+        name="Admin" 
+        component={AdminScreen} 
+        options={{
+          headerShown: true,
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: '#ccc',
+          }
+        }} 
+      />
+      
+      <Stack.Screen 
+        name="Info" 
+        component={AboutScreen} 
+        options={{
+          headerShown: true, 
+          title: "Informasjon",
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: '#ccc',
+          }
+        }} 
+      />
+      
+      <Stack.Screen 
+        name="Settings" 
+        component={SettingsScreen} 
+        options={{
+          headerShown: true, 
+          title: "Instillinger",
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: '#ccc',
+          }
+        }} 
+      />
+      
+      <Stack.Screen 
+        name="HijriCalendar" 
+        component={HijriCalendar} 
+        options={{
+          headerShown: true, 
+          title: "Hijri Kalender",
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: '#ccc',
+          }
+        }} 
+      />
+
+      <Stack.Screen 
+        name="AllahsNames" 
+        component={AllahNamesScreen}
+        options={{
+          headerShown: true, 
+          title: "Allah's 99 navn",
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: '#ccc',
+          }
+        }} 
+      />
+      
+      <Stack.Screen 
+        name="Surah" 
+        component={SurahScreen} 
+        options={({ route }) => ({
+          headerShown: true,
+          title : `Surah ${route.params.surahName}`,
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderBottomColor: '#ccc',
+          }
+        })}  
+      />
 
     </Stack.Navigator>
   );

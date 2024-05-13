@@ -3,6 +3,7 @@ const PRAYER_TIME_CALENDAR_URL = "http://api.aladhan.com/v1/calendarByCity";
 const PRAYER_TIME_BY_DATE_URL = "http://api.aladhan.com/v1/timingsByCity";
 const HIJRI_CALENDAR_URL = "http://api.aladhan.com/v1/gToH"
 const QIBLA_DIRECTION_URL = "http://api.aladhan.com/v1/qibla"
+const QURAN_SURAH_URL = "http://api.alquran.cloud/v1/surah"
 const country = "Norway";
 const method = "3"
 
@@ -28,6 +29,21 @@ export const fetchTimesByDate = async (date, city) =>{
     } catch (error) {
         console.error('Error fetching prayer times:', error);
         return null;
+    }
+}
+
+export const fetchQuranSurah = async(surahNum) => {
+    try {
+        const response = await fetch(`${QURAN_SURAH_URL}/${surahNum}`)
+        const data = await response.json()
+
+        if (!response.ok){
+            throw new Error(data.message || "Unable to fetch quran data")
+        }
+        return data
+    } catch (error) {
+        console.log(`Error in fetching surah ${surahNum}`, error.message)
+        return null
     }
 }
 
