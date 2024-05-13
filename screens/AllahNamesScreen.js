@@ -1,6 +1,9 @@
-import { ScrollView, StyleSheet, Text, View, } from 'react-native'
+import { Dimensions, ScrollView, StyleSheet, Text, View, } from 'react-native'
 import React from 'react'
 import { namesOfAllah } from '../data/namesOfAllah'
+
+
+const screenWidth = Dimensions.get("window").width;
 
 const AllahNamesScreen = () => {
     return (
@@ -32,20 +35,19 @@ const AllahNamesScreen = () => {
 
             
             <View style={styles.tableHeader}>
-                <Text style={[styles.cell, styles.bold]}>#</Text>
-                <Text style={[styles.cell, styles.bold]}>Navn</Text>
-                <Text style={[styles.cell, styles.bold]}>Navn</Text>
-                <Text style={[styles.cell, styles.bold]}>Oversettelse</Text>
+                <Text style={[styles.tableHeader, { width: screenWidth * 0.1 }]}>1</Text>
+                <Text style={[styles.tableHeader, { width: screenWidth * 0.2 }]}>Name</Text>
+                <Text style={[styles.tableHeader, { width: screenWidth * 0.3 }]}>Transliteration</Text>
+                <Text style={[styles.tableHeader, { width: screenWidth * 0.4}]}>Meaning</Text>
             </View>
-            {Object.entries(namesOfAllah).map(([key, { name, transliteration, meaning }]) => (
-                <View key={key} style={styles.tableRow}>
-                    <Text style={styles.cell}>{key}</Text>
-                    <Text style={[styles.cell, styles.bold]}>{name}</Text>
-                    <Text style={styles.cell}>{transliteration}</Text>
-                    <Text style={styles.cell}>{meaning}</Text>
+            {Object.entries(namesOfAllah).map(([key, { name, transliteration, meaning }], index) => (
+                <View key={index} style={styles.tableRow}>
+                    <Text style={[styles.cell, { width: screenWidth * 0.1}]}>{key}</Text>
+                    <Text style={[styles.cell, styles.bold, { width: screenWidth * 0.2 }]}>{name}</Text>
+                    <Text style={[styles.cell, { width: screenWidth * 0.3 }]}>{transliteration}</Text>
+                    <Text style={[styles.cell, { width: screenWidth * 0.4 }]}>{meaning}</Text>
                 </View>
             ))}
-            
         </ScrollView>
     )
 }
@@ -53,19 +55,12 @@ const AllahNamesScreen = () => {
 export default AllahNamesScreen
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-    },
-
+   
     tableHeader: {
         flexDirection: 'row',
-        justifyContent: "space-between",
-        alignItems: "center",
-        borderBottomWidth: 1,
         backgroundColor: 'green',
-        borderTopWidth: 1,
-        padding: 10,
+        textAlign: "center",
+        paddingVertical: 10
     },
 
     tableRow: {
@@ -73,12 +68,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: "center",
         width: "100%",
-        justifyContent: "space-between",
         borderBottomWidth: 1,
-        padding: 10,
+        paddingVertical: 10,
     },
     cell: {
-        flex: 1,
+        textAlign: "center",
     },
 
     bold: {
