@@ -4,8 +4,10 @@ const PRAYER_TIME_BY_DATE_URL = "http://api.aladhan.com/v1/timingsByCity";
 const HIJRI_CALENDAR_URL = "http://api.aladhan.com/v1/gToH"
 const QIBLA_DIRECTION_URL = "http://api.aladhan.com/v1/qibla"
 const QURAN_SURAH_URL = "http://api.alquran.cloud/v1/surah"
+const QURAN_SURAH_RECITATION_URL = "https://api.quran.com/api/v4/chapter_recitations/7"
 const country = "Norway";
 const method = "3"
+
 
 
 
@@ -35,6 +37,37 @@ export const fetchTimesByDate = async (date, city) =>{
 export const fetchQuranSurah = async(surahNum) => {
     try {
         const response = await fetch(`${QURAN_SURAH_URL}/${surahNum}`)
+        const data = await response.json()
+
+        if (!response.ok){
+            throw new Error(data.message || "Unable to fetch quran data")
+        }
+        return data
+    } catch (error) {
+        console.log(`Error in fetching surah ${surahNum}`, error.message)
+        return null
+    }
+}
+
+export const fetchQuranSurahTranslation = async(surahNum) => {
+    try {
+        const response = await fetch(`${QURAN_SURAH_URL}/${surahNum}/en.asad`)
+        const data = await response.json()
+
+        if (!response.ok){
+            throw new Error(data.message || "Unable to fetch quran data")
+        }
+        return data
+    } catch (error) {
+        console.log(`Error in fetching surah ${surahNum}`, error.message)
+        return null
+    }
+}
+
+export const fetchQuranSurahRecitation  = async(surahNum) => {
+    
+    try {
+        const response = await fetch(`${QURAN_SURAH_RECITATION_URL}/${surahNum}.mp3`)
         const data = await response.json()
 
         if (!response.ok){
