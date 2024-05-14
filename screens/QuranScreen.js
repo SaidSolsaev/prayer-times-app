@@ -27,7 +27,8 @@ export default QuranScreen
 
 const styles = StyleSheet.create({
   container:{
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    
   },
   column: {
     marginBottom: 20,

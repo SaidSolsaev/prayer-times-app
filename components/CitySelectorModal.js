@@ -35,6 +35,7 @@ const CitySelectorModal = ({visible, onClose, onSelectCity }) => {
                     <TextInput 
                         style={styles.input}
                         placeholder="Søk etter by..."
+                        placeholderTextColor="#787878"
                         value={search}
                         onChangeText={setSearch}
                     />
@@ -92,11 +93,13 @@ const styles = StyleSheet.create({
     input: {
         height: 40,
         borderWidth: 1,
-        borderRadius: 10,
+        borderRadius: 5,
         padding: 10,
         width: '100%',
         marginBottom: 20,
-        color: "black",
+        fontSize: 16,
+        color: '#000',
+        backgroundColor: '#fff',
     },
       
     cityName: {

@@ -18,7 +18,7 @@ const SurahScreen = ({route}) => {
     }
 
     return (
-        <ScrollView>
+        <ScrollView style={{ flex: 1}}>
             <View style={styles.container}>
                 <View style={styles.column}>
                     {surah.map((surah, index) => (
