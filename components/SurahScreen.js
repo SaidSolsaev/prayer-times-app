@@ -4,6 +4,8 @@ import { fetchQuranSurah, fetchQuranSurahRecitation, fetchQuranSurahTranslation 
 import LoadingSircle from './LoadingSircle';
 import {Audio} from "expo-av";
 import Slider from '@react-native-community/slider';
+import { AntDesign } from '@expo/vector-icons';
+import { debounce } from 'lodash';
 
 const SurahScreen = ({route, navigation}) => {
     const {surahNum} = route.params;
@@ -45,24 +47,21 @@ const SurahScreen = ({route, navigation}) => {
     const [playbackPosition, setPlaybackPosition] = useState(null);
     const [playbackDuration, setPlaybackDuration] = useState(null);
 
-    useEffect(() => {
-        return sound
-            ? () => {
-                console.log("Unloading sound");
-                sound.unloadAsync();
-            }
-            : undefined;
-    }, [sound]);
-
-    const playPauseAudio = async (url) => {
+    const playPauseAudio = async () => {
         if (!sound){
+            console.log("Loading new sound from URL:", surahRecitation);
+
             const {sound: newSound, status} = await Audio.Sound.createAsync(
-                {uri: url},
-                {shouldPlay: true}
+                {uri: surahRecitation},
+                {shouldPlay: false},
             );
             setSound(newSound);
-            setIsPlaying(true);
-            newSound.setOnPlaybackStatusUpdate(updateStatus)
+            newSound.setOnPlaybackStatusUpdate(updateStatus);
+
+            if (status.isLoaded && !status.isPlaying){
+                await newSound.playAsync();
+                setIsPlaying(true);
+            }
         }else{
             if (isPlaying){
                 await sound.pauseAsync();
@@ -74,20 +73,32 @@ const SurahScreen = ({route, navigation}) => {
         }
     };
 
-    const updateStatus = (status) => {
-        if (!status.isLoaded){
-            if (status.error){
-                console.log(`Playback error: ${status.error}`)
-            }
-        } else{
+    const updateStatus = async(status) => {
+        if (status.isLoaded) {
             setPlaybackPosition(status.positionMillis);
             setPlaybackDuration(status.durationMillis);
-
-            if (status.didJustFinish && !status.isLooping){
+            
+            if (status.didJustFinish && !status.isLooping) {
+                console.log("Playback finished, resetting...");
                 setIsPlaying(false);
+                await sound.setPositionAsync(0);
+                
             }
+        } else if (status.error) {
+            console.error(`Playback error: ${status.error}`);
         }
     }
+
+    useEffect(() => {
+        return () => {
+            if (sound) {
+                console.log('Stopping and unloading sound');
+                sound.stopAsync().then(() => {
+                    sound.unloadAsync();
+                });
+            }
+        };
+    }, [sound]);
 
     function formatTime(ms){
         const totalSeconds = Math.floor(ms / 1000);
@@ -109,32 +120,56 @@ const SurahScreen = ({route, navigation}) => {
         return <LoadingSircle />
     }
 
+    const debouncedSeek = debounce((newPosition) => {
+        if (sound) {
+          sound.setPositionAsync(newPosition).catch(err => console.error('Error setting position:', err));
+        }
+      }, 300)
+
     const content = showTranslation ? surahTranslation : surah;
 
 
     return (
-        <ScrollView style={{ flex: 1}}>
+        <ScrollView>
             <View style={styles.container}>
                 
-                <TouchableOpacity onPress={() => playPauseAudio(surahRecitation)} style={styles.playPauseButton}>
-                    <Text>{isPlaying ? 'Pause' : 'Play'}</Text>
-                </TouchableOpacity>
-                
-                <Slider
-                    style={{ width: '100%', height: 40 }}
-                    minimumValue={0}
-                    maximumValue={playbackDuration ? playbackDuration : 0}
-                    value={playbackPosition ? playbackPosition : 0}
-                    onValueChange={value => {
-                        if (sound) {
-                            sound.setPositionAsync(value);
-                        }
-                    }}
-                />
-                
-                <Text>
-                Duration: {formatTime(playbackPosition || 0)} / {formatTime(playbackDuration || 0)}
-                </Text>
+                <View style={styles.playerContainer}>
+                    
+                    <View style={styles.sliderContainer}>
+                        <Text>
+                            {formatTime(playbackPosition || 0)}
+                        </Text>
+
+                        <Slider
+                            style={styles.slider}
+                            minimumValue={0}
+                            maximumValue={1}
+                            value={playbackPosition / playbackDuration}
+                            onValueChange={value => {
+                                const newPlaybackPosition = value * playbackDuration;
+                                debouncedSeek(Math.round(newPlaybackPosition));
+                            }}
+                            minimumTrackTintColor="#1FB954" // Spotify green, for example
+                            maximumTrackTintColor="#D3D3D3"
+                            thumbTintColor="rgba(255, 255, 255, 0)"
+                        />
+                        
+                        <Text>
+                            {formatTime(playbackDuration || 0)}
+                        </Text>
+                    </View>
+
+                    <View style={styles.playerButtonContainer}>
+                        <TouchableOpacity onPress={playPauseAudio} style={styles.playPauseButton}>
+                            {isPlaying ? (
+                                <AntDesign name="pausecircle" size={42} color="red"/>
+                            ) : (
+                                <AntDesign name="play" size={42} color="green" />
+                            )}
+                        </TouchableOpacity>
+                    </View>
+                    
+                </View>
 
 
 
@@ -175,7 +210,6 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
 
-
     ayah: {
         fontSize: 32,
         fontWeight: "bold",
@@ -189,9 +223,30 @@ const styles = StyleSheet.create({
         padding: 10,
         lineHeight: 30
     },
-    playPauseButton: {
-        padding: 10,
-        backgroundColor: '#ccc',
-        alignSelf: 'center'
-    }
+    
+    playerContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    sliderContainer: {
+        width: "100%",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        paddingTop: 10,
+    },
+
+    playerButtonContainer:{
+        marginTop: 0,
+    },
+
+    slider: {
+        width: "70%"
+    },
+
+    // playPauseButton: {
+    //     padding: 10,
+    //     backgroundColor: "red"
+    // },
 })
