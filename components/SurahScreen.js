@@ -24,7 +24,7 @@ const SurahScreen = ({route, navigation}) => {
         fetchQuranSurahRecitation(surahNum).then(data => 
             setSurahRecitation(data.audio_file.audio_url));
     }, [surahNum]);
-
+    
 
     useEffect(() => {
         navigation.setOptions({
@@ -53,7 +53,7 @@ const SurahScreen = ({route, navigation}) => {
 
             const {sound: newSound, status} = await Audio.Sound.createAsync(
                 {uri: surahRecitation},
-                {shouldPlay: false},
+                {shouldPlay: true},
             );
             setSound(newSound);
             newSound.setOnPlaybackStatusUpdate(updateStatus);
@@ -61,6 +61,8 @@ const SurahScreen = ({route, navigation}) => {
             if (status.isLoaded && !status.isPlaying){
                 await newSound.playAsync();
                 setIsPlaying(true);
+            }else if(!status.isLoaded){
+                return <LoadingSircle />
             }
         }else{
             if (isPlaying){
@@ -82,7 +84,6 @@ const SurahScreen = ({route, navigation}) => {
                 console.log("Playback finished, resetting...");
                 setIsPlaying(false);
                 await sound.setPositionAsync(0);
-                
             }
         } else if (status.error) {
             console.error(`Playback error: ${status.error}`);
@@ -175,11 +176,9 @@ const SurahScreen = ({route, navigation}) => {
 
                 <View style={styles.column}>
                     {content.map((ayah, index) => (
-                        <View style={styles.row} key={index}>
-                            <Text style={content == surah ? styles.ayah : styles.translation}>
-                                {ayah.text}
-                            </Text>
-                        </View>
+                        <Text key={index} style={content == surah ? styles.ayah : styles.translation}>
+                            {ayah.text}
+                        </Text>
                     ))}
                     
                 </View>
@@ -193,13 +192,12 @@ export default SurahScreen
 const styles = StyleSheet.create({
     container:{
         backgroundColor: "#fff",
-        flex: 1,
-        width: "100%"
     },
 
     column: {
         width: "100%",
         flexDirection: "column",
+        marginVertical: 30,
     },
   
     row: {
@@ -211,22 +209,25 @@ const styles = StyleSheet.create({
     },
 
     ayah: {
-        fontSize: 32,
+        fontSize: 22,
         fontWeight: "bold",
         textAlign: "right",
-        lineHeight: 60,
+        lineHeight: 0,
         marginBottom: 0,
-        padding: 10
+        // padding: 10
+        paddingHorizontal: 10
     },
     translation: {
         fontSize: 18,
-        padding: 10,
+        paddingHorizontal: 10,
         lineHeight: 30
     },
     
     playerContainer: {
         alignItems: "center",
         justifyContent: "center",
+        borderBottomColor: "#ccc",
+        borderBottomWidth: 1,
     },
 
     sliderContainer: {
@@ -239,10 +240,11 @@ const styles = StyleSheet.create({
 
     playerButtonContainer:{
         marginTop: 0,
+        marginBottom: 10,
     },
 
     slider: {
-        width: "70%"
+        width: "70%",
     },
 
     // playPauseButton: {
