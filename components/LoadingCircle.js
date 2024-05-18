@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import React from 'react'
 
-const LoadingSircle = () => {
+export const LoadingCircle = () => {
     return (
         <View style={styles.container}>
             <ActivityIndicator size="large" color="green" />
@@ -10,7 +10,15 @@ const LoadingSircle = () => {
     )
 }
 
-export default LoadingSircle
+
+export const LoadingCircleSmall = ({text}) => {
+    return (
+        <View style={styles.smallContainer}>
+            <ActivityIndicator size="small" color="green" />
+            <Text>{text ? text : 'Laster inn data...'}</Text>
+        </View>
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -18,5 +26,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
+    },
+    smallContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
     }
 })

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Share, View, Image, Modal } from 'react-native'
+import { StyleSheet, Share, View, Image, } from 'react-native'
 import React from 'react'
 import BoxContainer from '../components/BoxContainer'
 import { Ionicons } from '@expo/vector-icons';

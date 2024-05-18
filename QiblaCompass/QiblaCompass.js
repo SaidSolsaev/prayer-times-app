@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import { Image, View, Text, StyleSheet} from 'react-native';
 import { moderateScale } from 'react-native-size-matters';
-import LoadingSircle from '../components/LoadingSircle';
+import {LoadingCircle} from '../components/LoadingCircle';
 
 export const useQiblaCompass = () => {
     const [subscription, setSubscription] = useState(null);
@@ -164,7 +164,7 @@ const QiblaCompass = forwardRef(
         if (isLoading) {
             return (
                 <View style={[styles.container, { backgroundColor }]}>
-                    <LoadingSircle />
+                    <LoadingCircle />
                 </View>
             );
         }

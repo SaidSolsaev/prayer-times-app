@@ -1,8 +1,8 @@
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { fetchQuranSurah, fetchQuranSurahRecitation, fetchQuranSurahTranslation } from '../data/fetchData'
-import LoadingSircle from './LoadingSircle';
-import {Audio} from "expo-av";
+import  { LoadingCircle,LoadingCircleSmall } from './LoadingCircle';
+import {Audio, InterruptionModeAndroid, InterruptionModeIOS} from "expo-av";
 import Slider from '@react-native-community/slider';
 import { AntDesign } from '@expo/vector-icons';
 import { debounce } from 'lodash';
@@ -46,11 +46,27 @@ const SurahScreen = ({route, navigation}) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [playbackPosition, setPlaybackPosition] = useState(null);
     const [playbackDuration, setPlaybackDuration] = useState(null);
+    const [loadingAudio, setLoadingAudio] = useState(false);
+
+    useEffect(() => {
+        const configureAudio = async () => {
+            await Audio.setAudioModeAsync({
+                allowsRecordingIOS: false,
+                interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+                interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+                playsInSilentModeIOS: true,
+                shouldDuckAndroid: true,
+                playThroughEarpieceAndroid: false,
+                shouldDuckIos: true
+            });
+        };
+        configureAudio();
+    }, []);
 
     const playPauseAudio = async () => {
         if (!sound){
             console.log("Loading new sound from URL:", surahRecitation);
-
+            setLoadingAudio(true);
             const {sound: newSound, status} = await Audio.Sound.createAsync(
                 {uri: surahRecitation},
                 {shouldPlay: true},
@@ -59,10 +75,11 @@ const SurahScreen = ({route, navigation}) => {
             newSound.setOnPlaybackStatusUpdate(updateStatus);
 
             if (status.isLoaded && !status.isPlaying){
+                setLoadingAudio(false);
                 await newSound.playAsync();
                 setIsPlaying(true);
             }else if(!status.isLoaded){
-                return <LoadingSircle />
+                return <LoadingCircle />
             }
         }else{
             if (isPlaying){
@@ -118,7 +135,7 @@ const SurahScreen = ({route, navigation}) => {
 
 
     if (!surah || !surahTranslation || !surahRecitation){
-        return <LoadingSircle />
+        return <LoadingCircle />
     }
 
     const debouncedSeek = debounce((newPosition) => {
@@ -162,7 +179,10 @@ const SurahScreen = ({route, navigation}) => {
 
                     <View style={styles.playerButtonContainer}>
                         <TouchableOpacity onPress={playPauseAudio} style={styles.playPauseButton}>
-                            {isPlaying ? (
+                            
+                            {loadingAudio ? 
+                                <LoadingCircleSmall text="Laster inn audio..."/> 
+                            : isPlaying ? (
                                 <AntDesign name="pausecircle" size={42} color="red"/>
                             ) : (
                                 <AntDesign name="play" size={42} color="green" />

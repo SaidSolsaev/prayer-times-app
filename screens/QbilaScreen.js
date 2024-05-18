@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, Image} from 'react-native'
 import React, {useState, useEffect} from 'react'
 import { fetchQiblaDirection } from '../data/fetchData'
 import * as Location from 'expo-location';
-import LoadingSircle from '../components/LoadingSircle';
 import QiblaCompass from '../QiblaCompass/QiblaCompass';
 
 const QbilaScreen = () => {

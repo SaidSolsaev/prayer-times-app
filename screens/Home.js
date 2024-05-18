@@ -8,7 +8,7 @@ import PrayerCard from '../components/PrayerCard'
 import CitySelectorModal from '../components/CitySelectorModal'
 import { Ionicons } from '@expo/vector-icons';
 import {useStoredLocation} from '../data/storedData'
-import LoadingSircle from '../components/LoadingSircle';
+import {LoadingCircle} from '../components/LoadingCircle';
 
 const Home = ({ navigation }) => {
     const [prayerTimes, setPrayerTimes] = useState(null);
@@ -59,7 +59,7 @@ const Home = ({ navigation }) => {
     }
 
     if (prayerTimes === null){
-        return <LoadingSircle />
+        return <LoadingCircle />
     }
 
   
