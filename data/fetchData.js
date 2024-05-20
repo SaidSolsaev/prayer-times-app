@@ -80,7 +80,7 @@ export const fetchQuranSurahRecitation  = async(surahNum) => {
     }
 }
 
-export const fetchPrayerTimingsCalendar = async(year, month, city) => {
+export const fetchPrayerTimingsCalendar = async(year, month, city, method) => {
     try {
         const response = await fetch(`${PRAYER_TIME_CALENDAR_URL}/${year}/${month}?city=${city}&country=${country}&method=${method}`);
         const data = await response.json();

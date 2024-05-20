@@ -73,7 +73,9 @@ const SurahScreen = ({route, navigation}) => {
             );
             setSound(newSound);
             newSound.setOnPlaybackStatusUpdate(updateStatus);
-
+            setLoadingAudio(false);
+            setIsPlaying(true);
+            
             if (status.isLoaded && !status.isPlaying){
                 setLoadingAudio(false);
                 await newSound.playAsync();
@@ -200,7 +202,6 @@ const SurahScreen = ({route, navigation}) => {
                             {ayah.text}
                         </Text>
                     ))}
-                    
                 </View>
             </View>
         </ScrollView>
@@ -232,9 +233,9 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: "bold",
         textAlign: "right",
-        lineHeight: 0,
-        marginBottom: 0,
-        // padding: 10
+        // marginBottom: 0,
+        color: "black",
+        // // padding: 10
         paddingHorizontal: 10
     },
     translation: {

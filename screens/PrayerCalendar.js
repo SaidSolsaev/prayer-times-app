@@ -3,12 +3,15 @@ import React, {useState, useEffect} from 'react'
 import { fetchPrayerTimingsCalendar } from '../data/fetchData';
 import { Picker } from '@react-native-picker/picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {useStoredLocation} from '../data/storedData'
 
 const PrayerCalendar = () => {
     const [calendarPrayerTimes, setCalendarPrayerTimes] = useState(null);
     const [location, setLocation] = useState("Oslo")
     const [year, setYear] = useState("2024");
     const [month, setMonth] = useState(new Date().getMonth() + 1);
+    const {calculationMethodId} = useStoredLocation();
+    
     const [showPicker, setShowPicker] = useState(false);
 
     const monthNames = [
@@ -19,13 +22,9 @@ const PrayerCalendar = () => {
     ];
 
     useEffect(() => {
-        fetchPrayerTimingsCalendar(year, month, location).then(data => 
+        fetchPrayerTimingsCalendar(year, month, location, calculationMethodId).then(data => 
             setCalendarPrayerTimes(data));
     }, [location, month, year])
-
-    // if (calendarPrayerTimes){
-    //     console.log(calendarPrayerTimes.map((day, index) => day.date))
-    // }
 
 
     return (
