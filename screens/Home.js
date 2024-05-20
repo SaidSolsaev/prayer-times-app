@@ -9,7 +9,6 @@ import CitySelectorModal from '../components/CitySelectorModal'
 import { Ionicons } from '@expo/vector-icons';
 import {useStoredLocation} from '../data/storedData'
 import {LoadingCircle} from '../components/LoadingCircle';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {registerForPushNotificationsAsync,schedulePushNotification,setUpNotificationListeners,} from '../notifications.js';
 import { registerBackgroundFetchAsync, unregisterBackgroundFetchAsync } from '../backgroundFetch.js'
 
@@ -26,7 +25,6 @@ const Home = ({ navigation }) => {
 
     const desiredPrayers = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
-    // console.log(calculationMethodId)
     
     useEffect(() => {
         registerForPushNotificationsAsync().then(token => {
