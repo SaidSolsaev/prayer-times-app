@@ -23,18 +23,23 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": ["fetch"]
+        "UIBackgroundModes": [
+          "fetch"
+        ]
       }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.saidsolsaev.faithfulcompanion"
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "permissions": ["RECEIVE_BOOT_COMPLETED"]
+      "permissions": [
+        "RECEIVE_BOOT_COMPLETED"
+      ]
     }
   }
 }
