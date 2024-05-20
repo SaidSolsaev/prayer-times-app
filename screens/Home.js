@@ -10,8 +10,8 @@ import { Ionicons } from '@expo/vector-icons';
 import {useStoredLocation} from '../data/storedData'
 import {LoadingCircle} from '../components/LoadingCircle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import {registerForPushNotificationsAsync,schedulePushNotification,setUpNotificationListeners,} from '../notifications.js';
-// import { registerBackgroundFetchAsync, unregisterBackgroundFetchAsync } from '../backgroundFetch.js'
+import {registerForPushNotificationsAsync,schedulePushNotification,setUpNotificationListeners,} from '../notifications.js';
+import { registerBackgroundFetchAsync, unregisterBackgroundFetchAsync } from '../backgroundFetch.js'
 
 
 const Home = ({ navigation }) => {
@@ -28,21 +28,21 @@ const Home = ({ navigation }) => {
 
     // console.log(calculationMethodId)
     
-    // useEffect(() => {
-    //     registerForPushNotificationsAsync().then(token => {
-    //       if (token) {
-    //         Alert.alert("Push Notification Token", token);
-    //       }
-    //     });
-    //     setUpNotificationListeners();
-    //     if (prayerTimes){
-    //         registerBackgroundFetchAsync(prayerTimes.timings);
-    //     }
+    useEffect(() => {
+        registerForPushNotificationsAsync().then(token => {
+          if (token) {
+            Alert.alert("Push Notification Token", token);
+          }
+        });
+        setUpNotificationListeners();
+        if (prayerTimes){
+            registerBackgroundFetchAsync(prayerTimes.timings);
+        }
 
-    //     return () => {
-    //         unregisterBackgroundFetchAsync();
-    //     };
-    // }, []);
+        return () => {
+            unregisterBackgroundFetchAsync();
+        };
+    }, []);
     
     
     
@@ -132,6 +132,7 @@ const Home = ({ navigation }) => {
             ): (
                 null
             )}
+            
         </ScrollView>
     )
 }

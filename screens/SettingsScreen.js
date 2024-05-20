@@ -104,7 +104,7 @@ const SettingsScreen = () => {
   }
 
   return (
-    <ScrollView >
+    <ScrollView contentContainerStyle={{flexGrow: 1, backgroundColor: "#fff"}}>
       <View style={styles.container}>
         
         <View style={styles.setting}>
@@ -176,9 +176,7 @@ const SettingsScreen = () => {
 const styles = StyleSheet.create({
   
   container: {
-    flex: 1,
     padding: 10,
-    backgroundColor: '#fff',
   },
   
   

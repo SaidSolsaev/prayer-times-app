@@ -38,24 +38,24 @@ async function registerForPushNotificationsAsync() {
   }
 }
 
-async function schedulePushNotification(prayerTimes) {
+const schedulePushNotification = async(prayerTimes) => {
  
   const prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
-  prayerNames.forEach((prayerName, index) => {
+  prayerNames.forEach(async (prayerName) => {
     const prayerTime = DateTime.fromISO(prayerTimes[prayerName]);
-    const trigger = prayerTime.toMillis() - Date.now();
+    const dateTime = new Date(prayerTime);
 
-    if (trigger > 0) {
-      Notifications.scheduleNotificationAsync({
-        content: {
-          title: `It's time for ${prayerName}!`,
-          body: `Time to perform your ${prayerName} prayer.`,
-          sound: 'adhan.mp3',
-        },
-        trigger: { seconds: trigger / 1000 },
-      });
-    };
+    console.log(dateTime)
+
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: `It's time for ${prayerName}!`,
+        body: `Time to perform your ${prayerName} prayer.`,
+        sound: 'adhan.mp3',
+      },
+      trigger: { date:  dateTime},
+    });
   });
 }
 

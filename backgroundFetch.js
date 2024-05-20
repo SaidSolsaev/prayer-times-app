@@ -2,7 +2,7 @@ import * as TaskManager from 'expo-task-manager';
 import * as BackgroundFetch from 'expo-background-fetch';
 import { registerForPushNotificationsAsync, schedulePrayerNotifications } from './notifications';
 
-const BACKGROUND_FETCH_TASK = 'background-fetch-task';
+const BACKGROUND_FETCH_TASK = 'background-fetch';
 
 TaskManager.defineTask(BACKGROUND_FETCH_TASK, async (prayerTimes) => {
     try {
@@ -21,7 +21,7 @@ TaskManager.defineTask(BACKGROUND_FETCH_TASK, async (prayerTimes) => {
 
 export async function registerBackgroundFetchAsync() {
     return BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
-        minimumInterval: 60 * 60, // 1 hour in seconds
+        minimumInterval: 15 * 60, // 1 hour in seconds
         stopOnTerminate: false,
         startOnBoot: true,
     });
