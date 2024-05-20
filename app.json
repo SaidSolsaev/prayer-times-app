@@ -2,7 +2,7 @@
   "expo": {
     "name": "Faithful Companion",
     "slug": "faithful-companion",
-    "owner": "your-username",
+    "owner": "saidsolsaev",
     "extra": {
       "eas": {
         "projectId": "1689b72f-1a9b-4d7a-898b-7f2c93fbcf0f"
@@ -13,7 +13,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
