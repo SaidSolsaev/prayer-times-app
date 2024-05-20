@@ -7,27 +7,34 @@ const LocationContext = createContext();
 // Provider-komponent
 export const LocationProvider = ({ children }) => {
     const [location, setLocation] = useState('Oslo');
+    const [calculationMethodId, setCalculationMethodId] = useState(3);
 
     useEffect(() => {
-        const loadLocation = async () => {
+        const loadSettings = async () => {
             const savedLocation = await AsyncStorage.getItem('location');
+            const savedMethod = await AsyncStorage.getItem('selectedCalculationMethodId');
+
             
-            if (savedLocation !== null) {
-                setLocation(savedLocation);
-            }
+            if (savedLocation !== null) setLocation(savedLocation);
+            if (savedMethod !== null) setCalculationMethodId(savedMethod)
+
         };
-        loadLocation();
+        loadSettings();
     }, []);
 
     useEffect(() => {
-        const saveLocation = async () => {
+        const saveSettings = async () => {
             await AsyncStorage.setItem('location', location);
+            await AsyncStorage.setItem('selectedCalculationMethodId', JSON.stringify(calculationMethodId));
         };
-        saveLocation();
-    }, [location]);
+        saveSettings();
+    }, [location, calculationMethodId]);
 
     return (
-        <LocationContext.Provider value={{ location, setLocation }}>
+        <LocationContext.Provider value={{ 
+            location, setLocation,
+            calculationMethodId, setCalculationMethodId,
+        }}>
             {children}
         </LocationContext.Provider>
     );

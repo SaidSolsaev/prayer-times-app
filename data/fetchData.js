@@ -6,12 +6,12 @@ const QIBLA_DIRECTION_URL = "http://api.aladhan.com/v1/qibla"
 const QURAN_SURAH_URL = "http://api.alquran.cloud/v1/surah"
 const QURAN_SURAH_RECITATION_URL = "https://api.quran.com/api/v4/chapter_recitations/7"
 const country = "Norway";
-const method = "3"
 
 
 
 
-export const fetchTimesByDate = async (date, city) =>{
+
+export const fetchTimesByDate = async (date, city, method) =>{
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();

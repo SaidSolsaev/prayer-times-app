@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, ScrollView, ImageBackground, TouchableOpacity } from 'react-native'
+import {StyleSheet, Text, View, ScrollView, ImageBackground, TouchableOpacity, Button } from 'react-native'
 import React from 'react'
 import HomeHeader from '../components/HomeHeader'
 import { useState, useEffect } from 'react'
@@ -9,13 +9,16 @@ import CitySelectorModal from '../components/CitySelectorModal'
 import { Ionicons } from '@expo/vector-icons';
 import {useStoredLocation} from '../data/storedData'
 import {LoadingCircle} from '../components/LoadingCircle';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import {registerForPushNotificationsAsync,schedulePushNotification,setUpNotificationListeners,} from '../notifications.js';
+// import { registerBackgroundFetchAsync, unregisterBackgroundFetchAsync } from '../backgroundFetch.js'
+
 
 const Home = ({ navigation }) => {
     const [prayerTimes, setPrayerTimes] = useState(null);
     const [date, setDate] = useState(new Date());
     
-    const { location, setLocation } = useStoredLocation();
-
+    const {location, setLocation, calculationMethodId} = useStoredLocation();
     const [modalVisible, setModalVisible] = useState(false)
     const [nextPrayer, setNextPrayer] = useState("");
     const [timeUntilNextPrayer, setTimeUntilNextPrayer] = useState({ hours: 0, minutes: 0, seconds: 0 });
@@ -23,11 +26,30 @@ const Home = ({ navigation }) => {
 
     const desiredPrayers = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
+    // console.log(calculationMethodId)
+    
+    // useEffect(() => {
+    //     registerForPushNotificationsAsync().then(token => {
+    //       if (token) {
+    //         Alert.alert("Push Notification Token", token);
+    //       }
+    //     });
+    //     setUpNotificationListeners();
+    //     if (prayerTimes){
+    //         registerBackgroundFetchAsync(prayerTimes.timings);
+    //     }
+
+    //     return () => {
+    //         unregisterBackgroundFetchAsync();
+    //     };
+    // }, []);
+    
+    
     
     useEffect(() => {
-        fetchTimesByDate(date, location).then(data => 
+        fetchTimesByDate(date, location, calculationMethodId).then(data => 
             setPrayerTimes(data.data));
-    }, [date, location])
+    }, [date, location, calculationMethodId])
 
     
 
@@ -110,7 +132,6 @@ const Home = ({ navigation }) => {
             ): (
                 null
             )}
-
         </ScrollView>
     )
 }

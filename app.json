@@ -1,7 +1,16 @@
 {
   "expo": {
-    "name": "prayer-times-app",
-    "slug": "prayer-times-app",
+    "name": "Faithful Companion",
+    "slug": "faithful-companion",
+    "owner": "your-username",
+    "extra": {
+      "eas": {
+        "projectId": "1689b72f-1a9b-4d7a-898b-7f2c93fbcf0f"
+      }
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

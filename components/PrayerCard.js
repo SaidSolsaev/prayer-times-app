@@ -10,6 +10,8 @@ const PrayerCard = ({prayer, nextPrayer, currentPrayer}) => {
         setNotification(!notifaction)
     }
 
+    // console.log(prayer)
+
     const isPastPrayer = prayer[0] !== currentPrayer 
         && new Date().getTime() - new Date().setHours(...prayer[1].split(':').map(Number), 0, 0) > 0;
 
