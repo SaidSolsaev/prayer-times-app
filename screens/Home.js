@@ -27,30 +27,29 @@ const Home = ({ navigation }) => {
     const desiredPrayers = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
     
-    useEffect(() => {
-        registerForPushNotificationsAsync().then(token => {
-          if (token) {
-            Alert.alert("Push Notification Token", token);
-          }
-        });
-        setUpNotificationListeners();
-
+    // useEffect(() => {
+    //     registerForPushNotificationsAsync().then(token => {
+    //       if (token) {
+    //         Alert.alert("Push Notification Token", token);
+    //       }
+    //     });
+    //     setUpNotificationListeners();
         
-        if (prayerTimes){
-            registerBackgroundFetchAsync(prayerTimes.timings);
-            schedulePushNotification(prayerTimes.timings);
+    //     if (prayerTimes){
+    //         registerBackgroundFetchAsync(prayerTimes.timings);
+    //         schedulePushNotification(prayerTimes.timings);
     
-            const subscription = Notifications.addNotificationReceivedListener(() => {
-            // Når en varsling mottas, planlegg neste bønn
-                schedulePushNotification(prayerTimes.timings);
-            });
-        }
+    //         const subscription = Notifications.addNotificationReceivedListener(() => {
+    //         // Når en varsling mottas, planlegg neste bønn
+    //             schedulePushNotification(prayerTimes.timings);
+    //         });
+    //     }
 
-        return () => {
-            unregisterBackgroundFetchAsync();
-            subscription.remove();
-        };
-    }, []);
+    //     return () => {
+    //         unregisterBackgroundFetchAsync();
+    //         subscription.remove();
+    //     };
+    // }, []);
     
     
     
@@ -144,10 +143,10 @@ const Home = ({ navigation }) => {
             ): (
                 null
             )}
-            <Button title="Press" onPress={() => handlePress(prayerTimes.timings)}/>
+            {/* <Button title="Press" onPress={() => handlePress(prayerTimes.timings)}/> */}
             
         </ScrollView>
-    )
+    );
 }
 
 export default Home
@@ -158,7 +157,6 @@ const styles = StyleSheet.create({
         paddingTop: 0,
         flexDirection: "column",
         height: 290,
-
     },
 
     topRow: {
@@ -177,20 +175,24 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         width: "100%"
     },
+
     modalContainer: {
         justifyContent: "center",
         alignItems: "center",
         flex: 1
     },
+
     nextPrayerStyle: {
         textAlign: "center",
         margin: 10,
         fontWeight: "bold",
         fontSize: 20,
     },
+
     prayerTimes: {
         alignItems: "center"
     },
+    
     background: {
         justifyContent: 'center',
         alignItems: 'center',

@@ -8,6 +8,7 @@ const LocationContext = createContext();
 export const LocationProvider = ({ children }) => {
     const [location, setLocation] = useState('Oslo');
     const [calculationMethodId, setCalculationMethodId] = useState(3);
+    
 
     useEffect(() => {
         const loadSettings = async () => {

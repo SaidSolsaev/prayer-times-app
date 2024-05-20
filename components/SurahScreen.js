@@ -13,6 +13,7 @@ const SurahScreen = ({route, navigation}) => {
     const [surahTranslation, setSurahTranslation] = useState(null);
     const [surahRecitation, setSurahRecitation] = useState(null);
     const [showTranslation, setShowTranslation] = useState(false);
+    const [fontSize, setFontSize] = useState(22)
     
     useEffect(() => {
         fetchQuranSurah(surahNum).then(data => 
@@ -148,6 +149,7 @@ const SurahScreen = ({route, navigation}) => {
 
     const content = showTranslation ? surahTranslation : surah;
 
+    const styles = getStyles(fontSize);
 
     return (
         <ScrollView>
@@ -210,7 +212,7 @@ const SurahScreen = ({route, navigation}) => {
 
 export default SurahScreen
 
-const styles = StyleSheet.create({
+const getStyles = (fontSize) => StyleSheet.create({
     container:{
         backgroundColor: "#fff",
     },
@@ -224,18 +226,14 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: "row",
         justifyContent: "center",
-        // borderBottomWidth: 1,
-        // borderBottomColor: "#ccc",
         paddingTop: 10,
     },
 
     ayah: {
-        fontSize: 22,
+        fontSize: fontSize,
         fontWeight: "bold",
         textAlign: "right",
-        // marginBottom: 0,
         color: "black",
-        // // padding: 10
         paddingHorizontal: 10
     },
     translation: {
