@@ -4,6 +4,7 @@ import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 import * as Device from 'expo-device';
 import { DateTime } from 'luxon';
+import { getNextPrayer } from './utils/prayerFunctions';
 
 const projectId = '1689b72f-1a9b-4d7a-898b-7f2c93fbcf0f';
 
@@ -38,25 +39,23 @@ async function registerForPushNotificationsAsync() {
   }
 }
 
+
+
 const schedulePushNotification = async(prayerTimes) => {
- 
-  const prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+  const nextPrayer = getNextPrayer(prayerTimes);
+  const dateTime = new Date(nextPrayer.time);
 
-  prayerNames.forEach(async (prayerName) => {
-    const prayerTime = DateTime.fromISO(prayerTimes[prayerName]);
-    const dateTime = new Date(prayerTime);
+  console.log(`Scheduling notification for ${nextPrayer.name} at ${dateTime}`);
 
-    console.log(dateTime)
-
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: `It's time for ${prayerName}!`,
-        body: `Time to perform your ${prayerName} prayer.`,
-        sound: 'adhan.mp3',
-      },
-      trigger: { date:  dateTime},
-    });
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: `It's time for ${nextPrayer.name}!`,
+      body: `Time to perform your ${nextPrayer.name} prayer.`,
+      sound: 'default',
+    },
+    trigger: { date:  dateTime},
   });
+  
 }
 
 async function playAdhanSound() {

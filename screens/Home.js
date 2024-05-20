@@ -11,7 +11,8 @@ import {useStoredLocation} from '../data/storedData'
 import {LoadingCircle} from '../components/LoadingCircle';
 import {registerForPushNotificationsAsync,schedulePushNotification,setUpNotificationListeners,} from '../notifications.js';
 import { registerBackgroundFetchAsync, unregisterBackgroundFetchAsync } from '../backgroundFetch.js'
-
+import * as Notifications from 'expo-notifications';
+  
 
 const Home = ({ navigation }) => {
     const [prayerTimes, setPrayerTimes] = useState(null);
@@ -33,12 +34,21 @@ const Home = ({ navigation }) => {
           }
         });
         setUpNotificationListeners();
+
+        
         if (prayerTimes){
             registerBackgroundFetchAsync(prayerTimes.timings);
+            schedulePushNotification(prayerTimes.timings);
+    
+            const subscription = Notifications.addNotificationReceivedListener(() => {
+            // Når en varsling mottas, planlegg neste bønn
+                schedulePushNotification(prayerTimes.timings);
+            });
         }
 
         return () => {
             unregisterBackgroundFetchAsync();
+            subscription.remove();
         };
     }, []);
     
@@ -80,6 +90,10 @@ const Home = ({ navigation }) => {
 
     if (prayerTimes === null){
         return <LoadingCircle />
+    }
+
+    const handlePress = (prayerTimes) => {
+        schedulePushNotification(prayerTimes)
     }
 
   
@@ -130,6 +144,7 @@ const Home = ({ navigation }) => {
             ): (
                 null
             )}
+            <Button title="Press" onPress={() => handlePress(prayerTimes.timings)}/>
             
         </ScrollView>
     )

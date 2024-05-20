@@ -21,7 +21,7 @@ TaskManager.defineTask(BACKGROUND_FETCH_TASK, async (prayerTimes) => {
 
 export async function registerBackgroundFetchAsync() {
     return BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
-        minimumInterval: 15 * 60, // 1 hour in seconds
+        minimumInterval: 15 * 60, // 15min in seconds
         stopOnTerminate: false,
         startOnBoot: true,
     });
