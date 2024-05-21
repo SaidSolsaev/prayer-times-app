@@ -6,10 +6,24 @@ const QIBLA_DIRECTION_URL = "http://api.aladhan.com/v1/qibla"
 const QURAN_SURAH_URL = "http://api.alquran.cloud/v1/surah"
 const QURAN_SURAH_RECITATION_URL = "https://api.quran.com/api/v4/chapter_recitations/7"
 const country = "Norway";
+const MOSQUE_LOCATOR_URL = "http://masjidnear.me/api/Masjid/SearchMasjids/query"
 
 
-
-
+export const fetchMosques = async (lat, lng) => {
+    try {
+        const response = await fetch(`${MOSQUE_LOCATOR_URL}/lat$${lat},lng$${lng},rad$10000`);
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.message || 'Unable to fetch data');
+        }
+        return data;
+    } catch (error) {
+        console.error('Error fetching prayer times:', error);
+        return null;
+    }
+    
+}
 
 export const fetchTimesByDate = async (date, city, method) =>{
     const day = date.getDate();

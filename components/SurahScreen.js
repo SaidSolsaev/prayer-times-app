@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { ScrollView, StyleSheet, Button, Text, View, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { fetchQuranSurah, fetchQuranSurahRecitation, fetchQuranSurahTranslation } from '../data/fetchData'
 import  { LoadingCircle,LoadingCircleSmall } from './LoadingCircle';
@@ -151,6 +151,15 @@ const SurahScreen = ({route, navigation}) => {
 
     const styles = getStyles(fontSize);
 
+    const changeFontSize = (increase) => {
+        let size = fontSize
+        if (increase){
+            setFontSize(size += 1)
+        } else if(!increase){
+            setFontSize(size -= 1)
+        }
+    }
+
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -195,8 +204,16 @@ const SurahScreen = ({route, navigation}) => {
                     </View>
                     
                 </View>
-
-
+                
+                {!showTranslation && 
+                    <View style={styles.buttonGroupContainer}>
+                        <View style={styles.buttonGroup}>
+                            <Button title='-' onPress={() => changeFontSize(false)} style={styles.button}/>
+                            <Text style={styles.btnGroupText}>Endre skriftstørrelse: {fontSize}</Text>
+                            <Button title='+' onPress={() => changeFontSize(true)} style={styles.button}/>
+                        </View>
+                    </View>
+                }
 
                 <View style={styles.column}>
                     {content.map((ayah, index) => (
@@ -222,7 +239,7 @@ const getStyles = (fontSize) => StyleSheet.create({
         flexDirection: "column",
         marginVertical: 30,
     },
-  
+
     row: {
         flexDirection: "row",
         justifyContent: "center",
@@ -236,12 +253,13 @@ const getStyles = (fontSize) => StyleSheet.create({
         color: "black",
         paddingHorizontal: 10
     },
+
     translation: {
         fontSize: 18,
         paddingHorizontal: 10,
         lineHeight: 30
     },
-    
+
     playerContainer: {
         alignItems: "center",
         justifyContent: "center",
@@ -264,6 +282,23 @@ const getStyles = (fontSize) => StyleSheet.create({
 
     slider: {
         width: "70%",
+    },
+
+    buttonGroupContainer: {
+        alignItems: "center",
+        justifyContent: "center"
+    },
+
+    buttonGroup: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: 10,
+        backgroundColor: "#ccc"
+    },
+
+    btnGroupText: {
+        fontSize: 16
     },
 
     // playPauseButton: {
