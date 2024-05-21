@@ -20,21 +20,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "plugins": [
-      [
-        "@rnmapbox/maps",
-        {
-          "RNMapboxMapsVersion": "11.0.0"
-        }
-      ]
-    ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
         "UIBackgroundModes": [
           "fetch"
         ]
-      }
+      },
+      "bundleIdentifier": "com.saidsolsaev.faithfulcompanion"
     },
     "android": {
       "adaptiveIcon": {

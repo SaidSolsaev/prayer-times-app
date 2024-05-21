@@ -1,3 +1,6 @@
+import {MOSQUE_API_KEY} from '@env';
+
+
 
 const PRAYER_TIME_CALENDAR_URL = "http://api.aladhan.com/v1/calendarByCity";
 const PRAYER_TIME_BY_DATE_URL = "http://api.aladhan.com/v1/timingsByCity";
@@ -6,20 +9,28 @@ const QIBLA_DIRECTION_URL = "http://api.aladhan.com/v1/qibla"
 const QURAN_SURAH_URL = "http://api.alquran.cloud/v1/surah"
 const QURAN_SURAH_RECITATION_URL = "https://api.quran.com/api/v4/chapter_recitations/7"
 const country = "Norway";
-const MOSQUE_LOCATOR_URL = "http://masjidnear.me/api/Masjid/SearchMasjids/query"
+const MOSQUE_LOCATOR_URL = "https://api.masjidiapp.com/v2/masjids?"
 
 
 export const fetchMosques = async (lat, lng) => {
     try {
-        const response = await fetch(`${MOSQUE_LOCATOR_URL}/lat$${lat},lng$${lng},rad$10000`);
-        const data = await response.json();
+        const response = await fetch(`${MOSQUE_LOCATOR_URL}lat=${lat}&long=${lng}&dist=3000`, {
+            headers: {
+                'apikey': MOSQUE_API_KEY,
+                'Content-Type': 'application/json',
+            }
+        });
         
         if (!response.ok) {
+            const errorText = await response.text()
+            console.error("API-ERROR_FETCHMOSQUE:", errorText)
             throw new Error(data.message || 'Unable to fetch data');
         }
+
+        const data = await response.json();
         return data;
     } catch (error) {
-        console.error('Error fetching prayer times:', error);
+        console.error('Error fetching mosque locator:', error);
         return null;
     }
     
@@ -43,7 +54,7 @@ export const fetchTimesByDate = async (date, city, method) =>{
         return data;
 
     } catch (error) {
-        console.error('Error fetching prayer times:', error);
+        console.error('Error fetching prayer times by time:', error);
         return null;
     }
 }
