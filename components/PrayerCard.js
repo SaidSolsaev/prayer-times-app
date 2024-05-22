@@ -12,8 +12,14 @@ const PrayerCard = ({prayer, nextPrayer, currentPrayer}) => {
 
     // console.log(prayer)
 
-    const isPastPrayer = prayer[0] !== currentPrayer 
-        && new Date().getTime() - new Date().setHours(...prayer[1].split(':').map(Number), 0, 0) > 0;
+    const now = new Date();
+    const prayerTime = new Date();
+    const [hour, minute] = prayer[1].split(":").map(Number);
+    prayerTime.setHours(hour, minute, 0, 0);
+
+    const isPastPrayer = prayer[0] !== currentPrayer &&
+        // !isNextDay &&
+        now > prayerTime;
 
         
     function getIcon(prayer){

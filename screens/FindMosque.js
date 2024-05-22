@@ -1,15 +1,24 @@
-import { StyleSheet, Text, View, Dimensions} from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Linking, Platform } from 'react-native';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import * as Location from "expo-location";
 import { fetchMosques } from '../data/fetchData';
 import {LoadingCircle} from "../components/LoadingCircle.js";
 import {WebView} from 'react-native-webview';
+import BottomSheet from '@gorhom/bottom-sheet';
+import { FlatList } from 'react-native-gesture-handler';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 
 const FindMosque = () => {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [mosques, setMosques] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    // Ref for BottomSheet
+    const sheetRef = useRef(null);
+
+    // Snap points for BottomSheet
+    const snapPoints = useMemo(() => ['10%', '50%'], []);
 
     useEffect(() => {
         const loadLocationAndMosques = async () => {
@@ -33,9 +42,6 @@ const FindMosque = () => {
         
     },[])
 
-    // console.log(mosques)
-
-
     if (loading) {
         return (
             <LoadingCircle />
@@ -49,6 +55,8 @@ const FindMosque = () => {
             </View>
         )
     }
+
+    const mosqueIcon = "https://www.flaticon.com/free-icon/mosque_7158433?term=mosque&page=1&position=21&origin=search&related_id=7158433"
 
     const mapHtml = `
         <!DOCTYPE html>
@@ -65,40 +73,100 @@ const FindMosque = () => {
             <body>
                 <div id="map"></div>
                 <script>
-                    var map = L.map('map').setView([${location.coords.latitude}, ${location.coords.longitude}], 14);
+                    var map = L.map('map').setView([${location.coords.latitude}, ${location.coords.longitude}], 12);
 
                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     }).addTo(map);
+
+                    
+
+                    var mosqueIcon = L.icon({
+                        iconUrl: '${mosqueIcon}',
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 32],
+                        popupAnchor: [0, -32]
+                    });
 
                     var userMarker = L.marker([${location.coords.latitude}, ${location.coords.longitude}]).addTo(map)
                     .bindPopup('Du er her').openPopup();
 
                     var mosques = ${JSON.stringify(mosques)};
                     mosques.forEach(function(mosque) {
-                        L.marker([mosque.latitude, mosque.longitude]).addTo(map)
+                        L.marker([mosque.latitude, mosque.longitude], {icon: mosqueIcon}).addTo(map)
                             .bindPopup('<b>' + mosque.title + '</b><br>' + mosque.city + ', ' + mosque.address + 
                             '<br>Retning: ' + mosque.denomination + '<br>Telefon: ' + mosque.phone_number +
                             '<br>Distanse fra din lokasjon: ' + mosque.distance + 'km'
                         );
                     });
+
+                    map.removeControl(map.zoomControl);
                 </script>
             </body>
         </html>
     `;
+
+    const openMaps = (lat, lng) => {
+        const url = Platform.select({
+            ios: `maps:0,0?q=${lat},${lng}`,
+            android: `geo:0,0?q=${lat},${lng}`
+        });
+
+        Linking.openURL(url);
+    }
+
+    const renderMosqueItem = ({ item }) => (
+        <View style={styles.mosqueItem}>
+            <View style={styles.mosqueInfoContainer}>
+                <Text style={styles.mosqueTitle}>{item.title}</Text>
+                <Text>{item.address}, {item.city}</Text>
+                <Text>{item.phone_number}</Text>
+                <Text>{item.distance} km</Text>
+            </View>
+
+            <View style={styles.mosqueButtons}>
+                <TouchableOpacity onPress={() => openMaps(item.latitude, item.longitude)}>
+                    <FontAwesome5 name="directions" size={22} color="green" style={{marginBottom: 10}}/>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                    <Ionicons name="call-sharp" size={22} color="green" />
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
     
     return (
-        <WebView
-            originWhitelist={['*']}
-            source={{ html: mapHtml }}
-            style={styles.webView}
-        />
+        <View style={styles.container}>
+            <WebView
+                originWhitelist={['*']}
+                source={{ html: mapHtml }}
+                style={styles.webView}
+            />
+
+            <BottomSheet ref={sheetRef} index={0} snapPoints={snapPoints} handleComponent={null}>
+                <View style={styles.bottomSheetHeader}>
+                    <Text style={styles.headerText}>Moskeer i nærheten</Text>
+                </View>
+                <View style={styles.contentContainer}>
+                    <FlatList 
+                        data={mosques}
+                        key={(item) => item.id.toString()}
+                        renderItem={renderMosqueItem}
+                    />
+                </View>
+            </BottomSheet>
+        </View>
     )
 }
 
 export default FindMosque
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+
     loadingContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -106,11 +174,47 @@ const styles = StyleSheet.create({
     },
     
     webView: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+        width: "100%",
+        height: "100%"
     },
     errorText: {
         fontSize: 18,
         color: 'red',
     },
+
+    bottomSheetHeader: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 20,
+        backgroundColor: '#f7f7f7',
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+    },
+
+    headerText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+
+    contentContainer: {
+        flex: 1,
+    },
+
+    mosqueItem: {
+        maxWidth: "100%",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: 20,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+    },
+
+    mosqueTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    mosqueButtons: {
+        marginTop: 8,
+    }
 });

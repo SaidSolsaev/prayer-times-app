@@ -47,8 +47,8 @@ function MyTabs() {
       })}
     >
         <Tab.Screen name="Hjem" component={Home}/>
-        <Tab.Screen name="Qibla" component={QbilaScreen} screenOptions={{headerShown: true}}/>
-        <Tab.Screen name="Finn Moske" component={FindMosque}/>
+        <Tab.Screen name="Qibla" component={QbilaScreen} />
+        <Tab.Screen name="Finn Moske" component={FindMosque} options={{headerShown: false}}/>
         <Tab.Screen name="Meny" component={AllScreen}/>
     </Tab.Navigator>
   )

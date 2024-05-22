@@ -14,7 +14,7 @@ const MOSQUE_LOCATOR_URL = "https://api.masjidiapp.com/v2/masjids?"
 
 export const fetchMosques = async (lat, lng) => {
     try {
-        const response = await fetch(`${MOSQUE_LOCATOR_URL}lat=${lat}&long=${lng}&dist=3000`, {
+        const response = await fetch(`${MOSQUE_LOCATOR_URL}lat=${lat}&long=${lng}&dist=100`, {
             headers: {
                 'apikey': MOSQUE_API_KEY,
                 'Content-Type': 'application/json',

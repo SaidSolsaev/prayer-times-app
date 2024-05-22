@@ -208,9 +208,13 @@ const SurahScreen = ({route, navigation}) => {
                 {!showTranslation && 
                     <View style={styles.buttonGroupContainer}>
                         <View style={styles.buttonGroup}>
-                            <Button title='-' onPress={() => changeFontSize(false)} style={styles.button}/>
+                            <TouchableOpacity onPress={() => changeFontSize(false)} style={styles.button}>
+                                <Text style={{fontSize: 22, fontWeight: "bold"}}>-</Text>
+                            </TouchableOpacity>
                             <Text style={styles.btnGroupText}>Endre skriftstørrelse: {fontSize}</Text>
-                            <Button title='+' onPress={() => changeFontSize(true)} style={styles.button}/>
+                            <TouchableOpacity onPress={() => changeFontSize(true)} style={styles.button}>
+                                <Text style={{fontSize: 22, fontWeight: "bold"}}>+</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 }
@@ -286,23 +290,30 @@ const getStyles = (fontSize) => StyleSheet.create({
 
     buttonGroupContainer: {
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        marginVertical: 10,
     },
 
     buttonGroup: {
         flexDirection: "row",
+        width: "70%",
         alignItems: "center",
         justifyContent: "space-between",
         padding: 10,
-        backgroundColor: "#ccc"
+        backgroundColor: "#ccc",
+        
     },
 
     btnGroupText: {
         fontSize: 16
     },
 
-    // playPauseButton: {
-    //     padding: 10,
-    //     backgroundColor: "red"
-    // },
+    button: {
+        backgroundColor: "green",
+        // padding: 10,
+        width: 30,
+        height: 30,
+        alignItems: "center",
+        justifyContent: "center",
+    }
 })
