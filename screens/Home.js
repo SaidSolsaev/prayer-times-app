@@ -52,7 +52,6 @@ const Home = ({ navigation }) => {
     // }, []);
     
     
-    
     useEffect(() => {
         fetchTimesByDate(date, location, calculationMethodId).then(data => 
             setPrayerTimes(data.data));

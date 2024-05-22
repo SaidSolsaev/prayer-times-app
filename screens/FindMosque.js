@@ -14,6 +14,7 @@ const FindMosque = () => {
     const [mosques, setMosques] = useState([]);
     const [loading, setLoading] = useState(true);
 
+
     // Ref for BottomSheet
     const sheetRef = useRef(null);
 
@@ -38,8 +39,8 @@ const FindMosque = () => {
             setLoading(false);
         };
 
-        loadLocationAndMosques();
         
+        loadLocationAndMosques();
     },[])
 
     if (loading) {
@@ -56,7 +57,6 @@ const FindMosque = () => {
         )
     }
 
-    const mosqueIcon = "https://www.flaticon.com/free-icon/mosque_7158433?term=mosque&page=1&position=21&origin=search&related_id=7158433"
 
     const mapHtml = `
         <!DOCTYPE html>
