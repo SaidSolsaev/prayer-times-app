@@ -5,8 +5,6 @@ import { fetchMosques } from '../data/fetchData';
 import {LoadingCircle} from "../components/LoadingCircle.js";
 import {WebView} from 'react-native-webview';
 
-// MapboxGL.setAccessToken(MAPBOX_API_KEY);
-
 const FindMosque = () => {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
