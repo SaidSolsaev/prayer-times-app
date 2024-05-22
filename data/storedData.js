@@ -17,7 +17,7 @@ export const LocationProvider = ({ children }) => {
 
             
             if (savedLocation !== null) setLocation(savedLocation);
-            if (savedMethod !== null) setCalculationMethodId(savedMethod)
+            if (savedMethod !== null) setCalculationMethodId(JSON.parse(savedMethod));
 
         };
         loadSettings();

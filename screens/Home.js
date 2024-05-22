@@ -50,6 +50,8 @@ const Home = ({ navigation }) => {
     //         subscription.remove();
     //     };
     // }, []);
+
+
     
     
     useEffect(() => {

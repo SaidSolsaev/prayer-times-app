@@ -1,9 +1,7 @@
-import {StyleSheet} from 'react-native';
 import Routes from './Routes';
 import {NavigationContainer} from '@react-navigation/native';
 import { LocationProvider } from './data/storedData';
 import React from 'react';
-
 
 
 export default function App() {
@@ -15,7 +13,3 @@ export default function App() {
     </LocationProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  
-});

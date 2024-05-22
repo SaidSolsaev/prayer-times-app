@@ -79,16 +79,21 @@ const FindMosque = () => {
                         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     }).addTo(map);
 
-                    
+                    var userIcon = L.icon({
+                        iconUrl: 'https://cdn-icons-png.flaticon.com/512/1946/1946429.png',
+                        iconSize: [32, 32], // size of the icon
+                        iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
+                        popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
+                    });
 
                     var mosqueIcon = L.icon({
-                        iconUrl: '${mosqueIcon}',
-                        iconSize: [32, 32],
+                        iconUrl: 'https://cdn-icons-png.flaticon.com/512/7158/7158433.png',
+                        iconSize: [40, 40],
                         iconAnchor: [16, 32],
                         popupAnchor: [0, -32]
                     });
 
-                    var userMarker = L.marker([${location.coords.latitude}, ${location.coords.longitude}]).addTo(map)
+                    var userMarker = L.marker([${location.coords.latitude}, ${location.coords.longitude}], {icon: userIcon}).addTo(map)
                     .bindPopup('Du er her').openPopup();
 
                     var mosques = ${JSON.stringify(mosques)};
