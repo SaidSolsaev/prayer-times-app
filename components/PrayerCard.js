@@ -3,22 +3,24 @@ import React, {useState} from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
-const PrayerCard = ({prayer, nextPrayer, currentPrayer}) => {
+const PrayerCard = ({prayer, nextPrayer, currentPrayer, isNextDay}) => {
     const [notifaction, setNotification] = useState(true)
 
     function changeNotification(){
         setNotification(!notifaction)
     }
 
-    // console.log(prayer)
+    // console.log(isNextDay)
 
     const now = new Date();
     const prayerTime = new Date();
     const [hour, minute] = prayer[1].split(":").map(Number);
     prayerTime.setHours(hour, minute, 0, 0);
 
+
     const isPastPrayer = prayer[0] !== currentPrayer &&
-        // !isNextDay &&
+        prayer[0] !== "Isha" &&
+        !isNextDay &&
         now > prayerTime;
 
         
@@ -30,7 +32,7 @@ const PrayerCard = ({prayer, nextPrayer, currentPrayer}) => {
         }
     }
     return (
-        <View style={[styles.card, prayer[0] == currentPrayer && styles.activeCard, isPastPrayer && styles.pastPrayer]} >
+        <View style={[styles.card, prayer[0] == currentPrayer && !isNextDay && styles.activeCard, isPastPrayer && styles.pastPrayer]} >
             <View style={{flex: .5,flexDirection: "row", alignItems: "center"}}>
                 {getIcon(prayer[0])}
                 <Text>{prayer[0]}</Text>

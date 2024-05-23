@@ -138,7 +138,7 @@ const Home = ({ navigation }) => {
                     {Object.entries(prayerTimes.timings)
                         .filter(([prayer, _]) => desiredPrayers.includes(prayer))
                         .map((prayer, index) => (
-                            <PrayerCard prayer={prayer} key={index} nextPrayer={nextPrayer} currentPrayer={currentPrayer}/>
+                            <PrayerCard prayer={prayer} key={index} nextPrayer={nextPrayer} currentPrayer={currentPrayer} isNextDay={date.getDate() === new Date().getDate() ? false : true}/>
                     ))}
                 </View>
             ): (
