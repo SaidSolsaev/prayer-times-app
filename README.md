@@ -40,7 +40,7 @@ Faithful Companion er en omfattende bønnetidsapp som hjelper muslimer med å ho
 | ![Hjem](./assets/screenshots/Screen1.png) | ![Kalender](./assets/screenshots/Screen2.png) | ![Velg By](./assets/screenshots/Screen3.png) | ![Qibla](./assets/screenshots/Screen4.png) | ![Finn Moske](./assets/screenshots/Screen5.png) | ![Meny](./assets/screenshots/Screen7.png)|
 
 ## Video
-[![App Video]](./assets/screenshots/App using.mp4)
+![App Video](./assets/screenshots/App using.mp4)
 
 Klikk på bildet over for å se en video av appen i bruk.
 
