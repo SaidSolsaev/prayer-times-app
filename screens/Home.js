@@ -115,7 +115,6 @@ const Home = ({ navigation }) => {
                     </View>
                     <HomeHeader date={date} setDate={setDate} />
                 </ImageBackground>
-
             </View>
             
             

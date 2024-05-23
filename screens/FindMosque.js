@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity, Linking, Platform } from 'react-native';
-import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Linking, Platform, Alert } from 'react-native';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import * as Location from "expo-location";
 import { fetchMosques } from '../data/fetchData';
 import {LoadingCircle} from "../components/LoadingCircle.js";
@@ -19,7 +19,7 @@ const FindMosque = () => {
     const sheetRef = useRef(null);
 
     // Snap points for BottomSheet
-    const snapPoints = useMemo(() => ['10%', '50%'], []);
+    const snapPoints = useMemo(() => ['8%', '50%'], []);
 
     useEffect(() => {
         const loadLocationAndMosques = async () => {
@@ -57,7 +57,6 @@ const FindMosque = () => {
         )
     }
 
-
     const mapHtml = `
         <!DOCTYPE html>
             <html>
@@ -66,7 +65,7 @@ const FindMosque = () => {
                 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
                 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
                 <style>
-                    #map { height: 100vh; width: 100%; }
+                    #map { height: 100vh; width: 100%;}
                 </style>
             </head>
             
@@ -81,9 +80,9 @@ const FindMosque = () => {
 
                     var userIcon = L.icon({
                         iconUrl: 'https://cdn-icons-png.flaticon.com/512/1946/1946429.png',
-                        iconSize: [32, 32], // size of the icon
+                        iconSize: [22, 22], // size of the icon
                         iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
-                        popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
+                        popupAnchor: [-4, -32] // point from which the popup should open relative to the iconAnchor
                     });
 
                     var mosqueIcon = L.icon({
@@ -120,6 +119,23 @@ const FindMosque = () => {
         Linking.openURL(url);
     }
 
+    const openCall = (number) => {
+        Alert.alert(
+            "Ring",
+            `Vil du ringe ${number}?`,
+            [
+                {
+                    text: "Avbryt",
+                    style: "cancel"
+                },
+                {
+                    text: "Ring",
+                    onPress: () => Linking.openURL(`tel:${number}`)
+                }
+            ]
+        );
+    }
+
     const renderMosqueItem = ({ item }) => (
         <View style={styles.mosqueItem}>
             <View style={styles.mosqueInfoContainer}>
@@ -134,7 +150,7 @@ const FindMosque = () => {
                     <FontAwesome5 name="directions" size={22} color="green" style={{marginBottom: 10}}/>
                 </TouchableOpacity>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => openCall(item.phone_number)}>
                     <Ionicons name="call-sharp" size={22} color="green" />
                 </TouchableOpacity>
             </View>
@@ -180,8 +196,9 @@ const styles = StyleSheet.create({
     
     webView: {
         width: "100%",
-        height: "100%"
+        height: "100%",
     },
+
     errorText: {
         fontSize: 18,
         color: 'red',
@@ -219,6 +236,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
     },
+
     mosqueButtons: {
         marginTop: 8,
     }
