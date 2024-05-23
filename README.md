@@ -27,7 +27,7 @@ Faithful Companion er en omfattende bønnetidsapp som hjelper muslimer med å ho
     ```
 3. Start Expo:
     ```sh
-    expo start
+    npx expo start
     ```
 
 ## Bruk
@@ -39,10 +39,6 @@ Faithful Companion er en omfattende bønnetidsapp som hjelper muslimer med å ho
 |------|----------|---------|-------|------------|------|
 | ![Hjem](./assets/screenshots/Screen1.png) | ![Kalender](./assets/screenshots/Screen2.png) | ![Velg By](./assets/screenshots/Screen3.png) | ![Qibla](./assets/screenshots/Screen4.png) | ![Finn Moske](./assets/screenshots/Screen5.png) | ![Meny](./assets/screenshots/Screen7.png)|
 
-## Video
-![App Video](./assets/screenshots/App using.mp4)
-
-Klikk på bildet over for å se en video av appen i bruk.
 
 ## Bidra
 1. Fork repoet
@@ -50,6 +46,3 @@ Klikk på bildet over for å se en video av appen i bruk.
 3. Commit dine endringer (`git commit -m 'Add some fooBar'`)
 4. Push til branchen (`git push origin feature/fooBar`)
 5. Opprett en ny Pull Request
-
-## Lisens
-[MIT](LICENSE)
